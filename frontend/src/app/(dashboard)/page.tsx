@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <div>
-      Here is Home Page
-    </div>
+    <p>
+      This is an authenticated route
+    </p>
   );
 }
