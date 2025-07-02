@@ -1,15 +1,16 @@
 import { Header } from "@/components/header";
-import React from "react";
+import { AuthGuard } from "@/components/auth-guard";
 
 type Props = {
   children: React.ReactNode;
 };
+
 const DashboardLayout = ({ children }: Props) => {
   return (
-    <>
-      <Header/>
+    <AuthGuard>
+      <Header />
       <main className="px-3 lg:px-14">{children}</main>
-    </>
+    </AuthGuard>
   );
 };
 
