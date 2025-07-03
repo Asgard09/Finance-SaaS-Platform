@@ -6,6 +6,7 @@ import { Navigation } from "./navigation";
 import { Button } from "@/components/ui/button";
 import { Loader2, LogOut, User } from "lucide-react";
 import { WelcomeMsg } from "./welcome-msg";
+import Image from "next/image";
 
 export const Header = () => {
   const { user, isLoaded, logout } = useAuth();
@@ -27,9 +28,11 @@ export const Header = () => {
               <div className="flex items-center gap-x-2">
                 <div className="flex items-center gap-x-2 bg-white/10 rounded-lg px-3 py-2">
                   {user.picture ? (
-                    <img
+                    <Image
                       src={user.picture}
                       alt={user.name}
+                      width={32}
+                      height={32}
                       className="w-8 h-8 rounded-full"
                     />
                   ) : (
