@@ -18,6 +18,6 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
         // Redirect về frontend với param error
         String errorMessage = exception.getMessage();
         System.out.println(errorMessage);
-        response.sendRedirect("http://locahost:3000" + "?error=" + errorMessage);
+        response.sendRedirect("http://localhost:3000" + "?error=" + errorMessage);
     }
 }
