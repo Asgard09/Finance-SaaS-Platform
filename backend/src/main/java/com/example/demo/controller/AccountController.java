@@ -1,18 +1,24 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AccountDTO;
+import com.example.demo.entity.Account;
+import com.example.demo.service.AccountService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/account")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class AccountController {
+
+    private final AccountService accountService;
 
     @GetMapping("/me")
     public ResponseEntity<Map<String, Object>> getAccountInfo(@AuthenticationPrincipal OAuth2User principal){
@@ -28,5 +34,10 @@ public class AccountController {
         userInfo.put("authenticated", true);
 
         return ResponseEntity.ok(userInfo);
+    }
+
+    @GetMapping("/create")
+    public ResponseEntity<Account> createAccount(@RequestBody AccountDTO accountDTO){
+        return ResponseEntity.ok(accountService.createAccount(accountDTO));
     }
 }
