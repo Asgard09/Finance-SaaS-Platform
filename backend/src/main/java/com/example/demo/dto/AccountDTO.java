@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AccountDTO {
-    private Long name;
+    private String name;
 }
