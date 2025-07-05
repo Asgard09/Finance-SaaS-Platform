@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type CreateAccountRequest = {
@@ -32,16 +33,18 @@ const createAccount = async (
 };
 
 export const useCreateAccount = () => {
+  /* Note: use cache data query without fetching from the server again*/
   const queryClient = useQueryClient();
 
+  /* Note: useMutation --> change data (POST/PUT/DELETE)*/
   return useMutation<CreateAccountResponse, Error, CreateAccountRequest>({
     mutationFn: createAccount,
     onSuccess: () => {
-      console.log("Account created successfully");
+      toast.success("Account created");
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
     },
     onError: (error) => {
-      console.error(`Failed to create account: ${error.message}`);
+      toast.error(`Failed to create account: ${error.message}`);
     },
   });
 };
