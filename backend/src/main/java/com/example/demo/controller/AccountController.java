@@ -31,7 +31,7 @@ public class AccountController {
         if (principal == null) {
             return ResponseEntity.status(401).build();
         }
-        User user = userService.findOrCreateUser(principal);
+        User user = userService.findUser(principal);
         Account saved = accountService.createAccount(accountDTO, user);
         return ResponseEntity.ok(accountMapper.toDTO(saved));
     }

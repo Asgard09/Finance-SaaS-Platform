@@ -13,7 +13,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User findOrCreateUser(OAuth2User oauth2User) {
+    public User findUser(OAuth2User oauth2User) {
         String oauth2Id = oauth2User.getAttribute("sub");
 
         return userRepository.findByOauthId(oauth2Id)
