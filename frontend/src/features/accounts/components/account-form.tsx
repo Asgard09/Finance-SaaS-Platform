@@ -52,7 +52,7 @@ export const AccountForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 pt-2"
+        className="space-y-4 p-4"
       >
         <FormField
           name="name"
