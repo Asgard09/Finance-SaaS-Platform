@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.UserDTO;
+import com.example.demo.entity.User;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,19 +23,17 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
-    @GetMapping("/info")
-    public ResponseEntity<Map<String, Object>> getAccountInfo(@AuthenticationPrincipal OAuth2User principal){
-        if (principal == null) return ResponseEntity.status(401).body(null);
+    private final UserService userService;
+    private final UserMapper userMapper;
 
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("id", principal.getAttribute("sub"));
-        userInfo.put("email", principal.getAttribute("email"));
-        userInfo.put("name", principal.getAttribute("name"));
-        userInfo.put("firstName", principal.getAttribute("given_name"));
-        userInfo.put("lastName", principal.getAttribute("family_name"));
-        userInfo.put("picture", principal.getAttribute("picture"));
-        userInfo.put("authenticated", true);
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getCurrentUser(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).body(null);
+        }
 
-        return ResponseEntity.ok(userInfo);
+        User user = userService.findOrCreateUser(principal);
+        UserDTO userDTO = userMapper.toDTO(user);
+        return ResponseEntity.ok(userDTO);
     }
 }
