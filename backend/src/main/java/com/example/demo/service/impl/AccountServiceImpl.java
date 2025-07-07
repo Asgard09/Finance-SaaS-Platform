@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.AccountDTO;
 import com.example.demo.entity.Account;
+import com.example.demo.entity.User;
 import com.example.demo.mapper.AccountMapper;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.service.AccountService;
@@ -15,7 +16,9 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
 
     @Override
-    public Account createAccount(AccountDTO accountDTO) {
-         return accountRepository.save(accountMapper.toEntity(accountDTO));
+    public Account createAccount(AccountDTO accountDTO, User user) {
+        Account account = accountMapper.toEntity(accountDTO);
+        account.setUser(user);
+        return accountRepository.save(account);
     }
 }

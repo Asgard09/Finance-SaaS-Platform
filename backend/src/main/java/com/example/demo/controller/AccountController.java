@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AccountDTO;
 import com.example.demo.entity.Account;
+import com.example.demo.entity.User;
 import com.example.demo.mapper.AccountMapper;
 import com.example.demo.service.AccountService;
+import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AccountController {
 
+    private final UserService userService;
     private final AccountService accountService;
     private final AccountMapper accountMapper;
 
@@ -28,7 +31,8 @@ public class AccountController {
         if (principal == null) {
             return ResponseEntity.status(401).build();
         }
-        Account saved = accountService.createAccount(accountDTO);
+        User user = userService.findOrCreateUser(principal);
+        Account saved = accountService.createAccount(accountDTO, user);
         return ResponseEntity.ok(accountMapper.toDTO(saved));
     }
 }
