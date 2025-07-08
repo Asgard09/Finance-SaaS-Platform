@@ -22,7 +22,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                                         Authentication authentication) throws IOException, ServletException {
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
 
-        userService.createNewUser(oauth2User);
+        userService.findOrCreateUser(oauth2User);
 
         response.sendRedirect("http://localhost:3000");
     }

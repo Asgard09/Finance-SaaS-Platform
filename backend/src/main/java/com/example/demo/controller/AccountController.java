@@ -12,8 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/account")
@@ -31,8 +30,15 @@ public class AccountController {
         if (principal == null) {
             return ResponseEntity.status(401).build();
         }
-        User user = userService.findUser(principal);
+        User user = userService.findOrCreateUser((principal));
         Account saved = accountService.createAccount(accountDTO, user);
         return ResponseEntity.ok(accountMapper.toDTO(saved));
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<AccountDTO>> getAllAccountOfCurrentUser(@AuthenticationPrincipal OAuth2User principal){
+        if (principal == null) return ResponseEntity.status(401).build();
+        User user = userService.findOrCreateUser(principal);
+        return ResponseEntity.ok(accountService.getAllAccount(user.getId()));
     }
 }
