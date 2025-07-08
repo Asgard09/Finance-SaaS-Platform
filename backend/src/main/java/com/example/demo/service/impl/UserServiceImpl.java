@@ -13,11 +13,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User findUser(OAuth2User oauth2User) {
+    public User findOrCreateUser(OAuth2User oauth2User) {
         String oauth2Id = oauth2User.getAttribute("sub");
 
         return userRepository.findByOauthId(oauth2Id)
-                .orElseThrow(() -> new RuntimeException("Cannot find user with : " + oauth2Id));
+                .orElseGet(() -> createNewUser(oauth2User));
     }
 
     @Override

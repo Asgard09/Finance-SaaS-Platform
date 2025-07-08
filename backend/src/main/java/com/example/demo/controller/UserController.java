@@ -32,7 +32,7 @@ public class UserController {
             return ResponseEntity.status(401).body(null);
         }
 
-        User user = userService.findUser(principal);
+        User user = userService.findOrCreateUser(principal);
         UserDTO userDTO = userMapper.toDTO(user);
         return ResponseEntity.ok(userDTO);
     }
