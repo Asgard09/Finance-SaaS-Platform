@@ -9,4 +9,6 @@ import java.util.List;
 public interface AccountService {
     Account createAccount(AccountDTO accountDTO, User user);
     List<AccountDTO> getAllAccount(Long userId);
+    void deleteAccount(Long accountId, Long userId);
+    void deleteAllAccounts(Long userId);
 }

@@ -41,4 +41,31 @@ public class AccountController {
         User user = userService.findOrCreateUser(principal);
         return ResponseEntity.ok(accountService.getAllAccount(user.getId()));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAccount(
+            @PathVariable Long id, @AuthenticationPrincipal OAuth2User principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).build();
+        }
+        
+        try {
+            User user = userService.findOrCreateUser(principal);
+            accountService.deleteAccount(id, user.getId());
+            return ResponseEntity.ok("Account deleted successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/deleteAll")
+    public ResponseEntity<String> deleteAllAccounts(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).build();
+        }
+        
+        User user = userService.findOrCreateUser(principal);
+        accountService.deleteAllAccounts(user.getId());
+        return ResponseEntity.ok("All accounts deleted successfully");
+    }
 }
