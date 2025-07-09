@@ -2,7 +2,7 @@
 
 import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
-// import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts";
+import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts";
 
 import { Loader2, Plus } from "lucide-react";
 
@@ -15,7 +15,7 @@ import { columns } from "./columns";
 
 const AccountPage = () => {
   const newAccount = useNewAccount();
-  // const deleteAccounts = useBulkDeleteAccounts();
+  const deleteAccounts = useBulkDeleteAccounts();
   const accountsQuery = useGetAccounts();
   const accounts = accountsQuery.data || [];
 
@@ -53,7 +53,9 @@ const AccountPage = () => {
             columns={columns}
             data= {accounts}
             filterKey={"name"}
-            onDelete={() => []}
+            onDelete={() => {
+              deleteAccounts.mutate();
+            }}
             disabled={isDisabled}
           />
         </CardContent>
