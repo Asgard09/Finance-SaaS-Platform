@@ -8,8 +8,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { Actions } from "./actions";
 
+export type Category = {
+  id: number;
+  plaiId?: number;
+  name: string;
+  userId: number;
+};
 
-export const columns: ColumnDef<ResponseType>[] = [
+export const columns: ColumnDef<Category>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -48,6 +54,6 @@ export const columns: ColumnDef<ResponseType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <Actions id={row.original.id} />,
+    cell: ({ row }) => <Actions id={row.original.id.toString()} />,
   },
 ];

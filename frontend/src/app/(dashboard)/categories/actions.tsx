@@ -2,8 +2,8 @@
 
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 
-// import { useOpenCategory } from "@/features/categories/hooks/use-open-category";
-// import { useDeleteCategory } from "@/features/categories/api/use-delete-category";
+import { useOpenCategory } from "@/features/categories/hooks/use-open-catgory";
+import { useDeleteCategory } from "@/features/categories/api/use-delete-category";
 import { useConfirm } from "@/hooks/use-confirm";
 
 import { Button } from "@/components/ui/button";
@@ -24,16 +24,16 @@ export const Actions = ({ id }: Props) => {
     "You are about to delete this category.",
   );
 
-  const deleteMutation = null//useDeleteCategory(id);
-//   const { onOpen } = useOpenCategory();
+  const deleteMutation = useDeleteCategory(id);
+  const { onOpen } = useOpenCategory();
 
-//   const handleDelete = async () => {
-//     const ok = await confirm();
+  const handleDelete = async () => {
+    const ok = await confirm();
 
-//     if (ok) {
-//       deleteMutation.mutate();
-//     }
-//   };
+    if (ok) {
+      deleteMutation.mutate();
+    }
+  };
 
   return (
     <>
