@@ -26,11 +26,4 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId", nullable = true)
     private Category category;
-    
-    // Keep the primitive fields for direct access if needed
-    @Column(name = "accountId", insertable = false, updatable = false)
-    private Long accountId;
-    
-    @Column(name = "categoryId", insertable = false, updatable = false)
-    private Long categoryId;
 }
