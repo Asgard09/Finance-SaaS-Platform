@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch("http://localhost:8080/auth/info", {
+      const response = await fetch("http://localhost:8080/user/profile", {
         credentials: "include",
       });
 
