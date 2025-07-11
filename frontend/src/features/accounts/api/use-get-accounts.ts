@@ -1,11 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { Account } from "@/app/(dashboard)/accounts/columns";
 
-type Account = {
-  id: number;
-  plaiId: number;
-  name: string;
-  userId: number;
-};
 
 const fetchAccounts = async (): Promise<Account[]> => {
   const response = await fetch("http://localhost:8080/api/account/getAll", {
