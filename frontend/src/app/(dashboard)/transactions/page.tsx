@@ -7,6 +7,8 @@ import { useNewTransaction } from "@/features/transactions/hooks/use-new-transac
 import { useGetTransactions } from "@/features/transactions/api/use-get-transactions";
 import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions";
 import { useBulkCreateTransactions } from "@/features/transactions/api/use-bulk-create-transactions";
+import { EditTransactionSheet } from "@/features/transactions/components/edit-transaction-sheet";
+import { NewTransactionSheet } from "@/features/transactions/components/new-transaction-sheet";
 
 import { useSelectAccount } from "@/features/accounts/hooks/use-select-account";
 
@@ -57,9 +59,7 @@ const TransactionsPage = () => {
   const isDisabled =
     transactionsQuery.isLoading || deleteTransactions.isPending;
 
-  const onSubmitImport = async (
-    values: (typeof transactionsSchema.$inferInsert)[],
-  ) => {
+  const onSubmitImport = async (values: any[]) => {
     const accountId = await confirm();
 
     if (!accountId) {
@@ -140,6 +140,8 @@ const TransactionsPage = () => {
           />
         </CardContent>
       </Card>
+      <NewTransactionSheet />
+      <EditTransactionSheet />
     </div>
   );
 };
