@@ -1,16 +1,18 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Category;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SummaryDTO {
     private int remainingAmount;
     private double remainingChange;
@@ -18,6 +20,25 @@ public class SummaryDTO {
     private double incomeChange;
     private int expenseAmount;
     private double expenseChange;
-    private List<Category> categories;
-    private List<Date> days;
+    private List<CategorySummaryDTO> categories;
+    private List<DaySummaryDTO> days;
+    
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CategorySummaryDTO {
+        private String name;
+        private Integer value;
+    }
+    
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DaySummaryDTO {
+        private String date;
+        private Integer income;
+        private Integer expense;
+    }
 }
