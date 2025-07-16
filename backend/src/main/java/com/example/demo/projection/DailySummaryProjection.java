@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.projection;
 
 import java.util.Date;
 

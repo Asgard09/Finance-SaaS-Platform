@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.projection;
 
 public interface FinancialSummaryProjection {
     Integer getIncome();
