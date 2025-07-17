@@ -21,24 +21,6 @@ type SummaryResponse = {
   }>;
 };
 
-type BackendSummaryResponse = {
-  remainingAmount: number;
-  remainingChange: number;
-  incomeAmount: number;
-  incomeChange: number;
-  expenseAmount: number;
-  expenseChange: number;
-  categories: Array<{
-    name: string;
-    value: number;
-  }>;
-  days: Array<{
-    date: string;
-    income: number;
-    expense: number;
-  }>;
-};
-
 const fetchSummary = async (
   from?: string,
   to?: string,
@@ -69,7 +51,7 @@ const fetchSummary = async (
     throw new Error("Failed to fetch summary");
   }
 
-  const data: BackendSummaryResponse = await response.json();
+  const data: SummaryResponse = await response.json();
   return {
     ...data,
     incomeAmount: convertAmountFromMiliunits(data.incomeAmount || 0),
