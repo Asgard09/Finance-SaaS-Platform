@@ -60,10 +60,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         method: "POST",
         credentials: "include",
       });
-      setUser(null);
-      window.location.href = "/login";
     } catch (error) {
       console.error("Logout failed:", error);
+    } finally {
+      setUser(null);
     }
   };
 
