@@ -36,9 +36,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch("http://localhost:8080/user/profile", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/profile`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const userData = await response.json();
@@ -56,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await fetch("http://localhost:8080/logout", {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout`, {
         method: "POST",
         credentials: "include",
       });

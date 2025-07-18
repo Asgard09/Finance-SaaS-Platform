@@ -26,14 +26,17 @@ const updateTransaction = async (
   id: string,
   data: UpdateTransactionRequest
 ): Promise<UpdateTransactionResponse> => {
-  const response = await fetch(`http://localhost:8080/api/transaction/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/transaction/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    }
+  );
 
   if (!response.ok) {
     if (response.status === 401) {

@@ -13,13 +13,16 @@ type Transaction = {
 };
 
 const fetchTransaction = async (id: string): Promise<Transaction> => {
-  const response = await fetch(`http://localhost:8080/api/transaction/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/transaction/${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
 
   if (!response.ok) {
     if (response.status === 401) {

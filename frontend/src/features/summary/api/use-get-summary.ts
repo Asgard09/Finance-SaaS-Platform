@@ -32,7 +32,7 @@ const fetchSummary = async (
   if (accountId) params.append("accountId", accountId);
 
   const queryString = params.toString();
-  const url = `http://localhost:8080/api/summary${
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/summary${
     queryString ? `?${queryString}` : ""
   }`;
 

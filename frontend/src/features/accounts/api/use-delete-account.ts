@@ -6,20 +6,25 @@ type ResponseType = {
 };
 
 const deleteAccount = async (id: string): Promise<ResponseType> => {
-  const response = await fetch(`http://localhost:8080/api/account/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/account/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
 
   if (!response.ok) {
     if (response.status === 401) {
       throw new Error("Authentication required. Please log in.");
     }
     if (response.status === 404) {
-      throw new Error("Account not found or you don't have permission to delete this account");
+      throw new Error(
+        "Account not found or you don't have permission to delete this account"
+      );
     }
     throw new Error("Failed to delete account");
   }

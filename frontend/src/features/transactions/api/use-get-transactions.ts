@@ -24,7 +24,7 @@ const fetchTransactions = async (
   if (accountId) params.append("accountId", accountId);
 
   const queryString = params.toString();
-  const url = `http://localhost:8080/api/transaction/getAll${
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/transaction/getAll${
     queryString ? `?${queryString}` : ""
   }`;
 

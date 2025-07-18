@@ -6,13 +6,16 @@ type ResponseType = {
 };
 
 const deleteAllAccounts = async (): Promise<ResponseType> => {
-  const response = await fetch("http://localhost:8080/api/account/deleteAll", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/account/deleteAll`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
 
   if (!response.ok) {
     if (response.status === 401) {

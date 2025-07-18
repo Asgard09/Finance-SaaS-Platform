@@ -13,14 +13,17 @@ type CreateCategoryResponse = {
 const createCategory = async (
   data: CreateCategoryRequest
 ): Promise<CreateCategoryResponse> => {
-  const response = await fetch("http://localhost:8080/api/category/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include", // This is important for OAuth2 authentication
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/category/create`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // This is important for OAuth2 authentication
+      body: JSON.stringify(data),
+    }
+  );
 
   if (!response.ok) {
     if (response.status === 401) {

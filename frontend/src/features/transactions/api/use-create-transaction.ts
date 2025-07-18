@@ -25,14 +25,17 @@ type CreateTransactionResponse = {
 const createTransaction = async (
   data: CreateTransactionRequest
 ): Promise<CreateTransactionResponse> => {
-  const response = await fetch("http://localhost:8080/api/transaction/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/transaction/create`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    }
+  );
 
   if (!response.ok) {
     if (response.status === 401) {
