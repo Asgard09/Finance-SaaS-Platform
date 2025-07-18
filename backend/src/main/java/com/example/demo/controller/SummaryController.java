@@ -17,7 +17,6 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/api/summary")
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class SummaryController {
 

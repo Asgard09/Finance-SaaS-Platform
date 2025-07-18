@@ -1,3 +1,6 @@
+frontend:
+  url: ${FRONTEND_URL}
+
 spring:
   datasource:
     url: ${DATASOURCE_URL}

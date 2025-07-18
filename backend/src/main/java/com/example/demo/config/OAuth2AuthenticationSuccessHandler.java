@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -15,6 +16,9 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     private final UserService userService;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -24,6 +28,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         userService.findOrCreateUser(oauth2User);
 
-        response.sendRedirect("http://localhost:3000");
+        response.sendRedirect(frontendUrl);
     }
 }
