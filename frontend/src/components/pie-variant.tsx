@@ -37,7 +37,7 @@ export const PieVariant = ({ data }: Props) => {
                 {payload.map((entry: any, index: number) => {
                   // Calculate percentage for this entry
                   const dataItem = data.find(item => item.name === entry.value);
-                  const percentage = total > 0 ? (dataItem.value / total) * 100 : 0;
+                  const percentage = total > 0 && dataItem?.value ? (dataItem.value / total) * 100 : 0;
                   
                   return (
                     <li
