@@ -78,11 +78,15 @@ export const EditTransactionSheet = () => {
     });
   };
 
+  const convertAmountFromMiliunits = (amount: number): string => {
+    return (amount / 1000).toString();
+  };
+
   const defaultValues = transactionQuery.data
     ? {
         accountId: transactionQuery.data.accountId.toString(),
         categoryId: transactionQuery.data.categoryId?.toString() || null,
-        amount: transactionQuery.data.amount.toString(),
+        amount: convertAmountFromMiliunits(transactionQuery.data.amount),
         date: transactionQuery.data.date
           ? new Date(transactionQuery.data.date)
           : new Date(),
