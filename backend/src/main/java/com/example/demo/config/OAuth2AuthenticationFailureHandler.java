@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,13 +11,15 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class OAuth2AuthenticationFailureHandler implements AuthenticationFailureHandler {
-    @Value("${frontend.url}")
-    private String frontendUrl;
+    private final String frontendUrl;
+
+    public OAuth2AuthenticationFailureHandler(@Value("${frontend.url}") String frontendUrl) {
+        this.frontendUrl = frontendUrl;
+    }
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         // Redirect về frontend với param error
         String errorMessage = exception.getMessage();
         System.out.println(errorMessage);

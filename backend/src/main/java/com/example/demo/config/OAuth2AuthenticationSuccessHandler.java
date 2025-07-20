@@ -1,7 +1,6 @@
 package com.example.demo.config;
 
 import com.example.demo.service.UserService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,16 +13,20 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    @Value("${frontend.url}")
-    private String frontendUrl;
-
+    private final String frontendUrl;
     private final UserService userService;
+
+    /*Note*/
+    public OAuth2AuthenticationSuccessHandler(@Value("${frontend.url}") String frontendUrl,
+                                              UserService userService) {
+        this.frontendUrl = frontendUrl;
+        this.userService = userService;
+    }
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
 
         userService.findOrCreateUser(oauth2User);

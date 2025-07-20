@@ -16,14 +16,17 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class SecurityConfig {
-
-    @Value("${frontend.url}")
-    private String frontendUrl;
-
+    private final String frontendUrl;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+    public SecurityConfig(@Value("${frontend.url}") String frontendUrl, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
+        this.frontendUrl = frontendUrl;
+        this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
+        this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
