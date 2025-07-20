@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/category")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class CategoryController {
 
     private final UserService userService;

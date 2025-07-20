@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/transaction")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class TransactionController {
 
     private final UserService userService;

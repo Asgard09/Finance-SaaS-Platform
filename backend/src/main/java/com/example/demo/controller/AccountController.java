@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class AccountController {
 
     private final UserService userService;

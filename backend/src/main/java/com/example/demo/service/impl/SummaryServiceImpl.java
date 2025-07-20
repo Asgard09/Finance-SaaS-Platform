@@ -1,9 +1,9 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.*;
-import com.example.demo.projection.CategorySummaryProjection;
-import com.example.demo.projection.DailySummaryProjection;
-import com.example.demo.projection.FinancialSummaryProjection;
+import com.example.demo.dto.projection.CategorySummaryProjection;
+import com.example.demo.dto.projection.DailySummaryProjection;
+import com.example.demo.dto.projection.FinancialSummaryProjection;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.service.SummaryService;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +71,7 @@ public class SummaryServiceImpl implements SummaryService {
                 })
                 .collect(Collectors.toList());
 
-        // Keep top 3 categories and group others
+        // Keep the top 3 categories and group others
         if (categories.size() > 3) {
             List<SummaryDTO.CategorySummaryDTO> topCategories = categories.subList(0, 3);
             int otherSum = categories.subList(3, categories.size()).stream()

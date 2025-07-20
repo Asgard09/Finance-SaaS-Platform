@@ -1,9 +1,9 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Transaction;
-import com.example.demo.projection.CategorySummaryProjection;
-import com.example.demo.projection.DailySummaryProjection;
-import com.example.demo.projection.FinancialSummaryProjection;
+import com.example.demo.dto.projection.CategorySummaryProjection;
+import com.example.demo.dto.projection.DailySummaryProjection;
+import com.example.demo.dto.projection.FinancialSummaryProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -37,18 +37,18 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Modifying
     @Query("DELETE FROM transactions t WHERE t.account.user.id = :userId")
-    int deleteByUserId(@Param("userId") Long userId);
+    void deleteByUserId(@Param("userId") Long userId);
 
     /*Note*/
     /*Find income, expense and remaining*/
     @Query(value = """
-        SELECT 
+        SELECT
             SUM(CASE WHEN t.amount >= 0 THEN t.amount ELSE 0 END) as income,
             SUM(CASE WHEN t.amount < 0 THEN t.amount ELSE 0 END) as expense,
             SUM(t.amount) as remaining
-        FROM transactions t 
-        INNER JOIN accounts a ON t.account_id = a.id 
-        WHERE a.user_id = :userId 
+        FROM transactions t
+        INNER JOIN accounts a ON t.account_id = a.id
+        WHERE a.user_id = :userId
         AND t.date BETWEEN :fromDate AND :toDate
         AND (:accountId IS NULL OR t.account_id = :accountId)
         """, nativeQuery = true)
@@ -61,13 +61,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     /*Get total expenses for Category*/
     @Query(value = """
-        SELECT 
+        SELECT
             c.name as name,
             SUM(ABS(t.amount)) as value
-        FROM transactions t 
-        INNER JOIN accounts a ON t.account_id = a.id 
+        FROM transactions t
+        INNER JOIN accounts a ON t.account_id = a.id
         INNER JOIN categories c ON t.category_id = c.id
-        WHERE a.user_id = :userId 
+        WHERE a.user_id = :userId
         AND t.amount < 0
         AND t.date BETWEEN :fromDate AND :toDate
         AND (:accountId IS NULL OR t.account_id = :accountId)
@@ -82,13 +82,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     );
     
     @Query(value = """
-        SELECT 
+        SELECT
             t.date as date,
             SUM(CASE WHEN t.amount >= 0 THEN t.amount ELSE 0 END) as income,
             SUM(CASE WHEN t.amount < 0 THEN ABS(t.amount) ELSE 0 END) as expense
-        FROM transactions t 
-        INNER JOIN accounts a ON t.account_id = a.id 
-        WHERE a.user_id = :userId 
+        FROM transactions t
+        INNER JOIN accounts a ON t.account_id = a.id
+        WHERE a.user_id = :userId
         AND t.date BETWEEN :fromDate AND :toDate
         AND (:accountId IS NULL OR t.account_id = :accountId)
         GROUP BY t.date

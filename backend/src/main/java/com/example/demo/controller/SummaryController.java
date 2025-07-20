@@ -18,6 +18,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/summary")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class SummaryController {
 
     private final UserService userService;
