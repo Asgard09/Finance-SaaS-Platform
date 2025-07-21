@@ -34,6 +34,15 @@ const INITIAL_IMPORT_RESULTS = {
   meta: {},
 };
 
+// Define the import value type for better type safety
+interface ImportValue {
+  payee: string;
+  amount: number;
+  date: string;
+  notes?: string;
+  categoryId?: number;
+}
+
 const TransactionsPage = () => {
   const [AccountDialog, confirm] = useSelectAccount();
   const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
@@ -59,7 +68,7 @@ const TransactionsPage = () => {
   const isDisabled =
     transactionsQuery.isLoading || deleteTransactions.isPending;
 
-  const onSubmitImport = async (values: any[]) => {
+  const onSubmitImport = async (values: ImportValue[]) => {
     const accountId = await confirm();
 
     if (!accountId) {
@@ -77,6 +86,13 @@ const TransactionsPage = () => {
       },
     });
   };
+
+  // Define filter options for the data table
+  const filterOptions = [
+    { key: "payee", label: "Payee" },
+    { key: "category", label: "Category" },
+    { key: "account", label: "Account" },
+  ];
 
   if (transactionsQuery.isLoading) {
     return (
@@ -131,7 +147,7 @@ const TransactionsPage = () => {
           <DataTable
             columns={columns}
             data={transactions}
-            filterKey={"payee"}
+            filterOptions={filterOptions}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
               deleteTransactions.mutate({ ids });
