@@ -26,4 +26,4 @@ spring:
               - openid
               - profile
               - email
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            redirect-uri: ${BACKEND_URL}/login/oauth2/code/google
