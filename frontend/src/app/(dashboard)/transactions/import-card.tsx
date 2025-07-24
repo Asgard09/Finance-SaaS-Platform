@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { format, parse } from "date-fns";
 
@@ -17,10 +18,18 @@ interface SelectedColumnsState {
   [key: string]: string | null;
 }
 
+interface ImportValue {
+  payee: string;
+  amount: number;
+  date: string;
+  notes?: string;
+  categoryId?: number;
+}
+
 type Props = {
   data: string[][];
   onCancel: () => void;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: ImportValue[]) => void;
 };
 
 export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {

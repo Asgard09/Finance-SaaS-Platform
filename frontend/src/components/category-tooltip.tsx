@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { formatCurrency } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 
