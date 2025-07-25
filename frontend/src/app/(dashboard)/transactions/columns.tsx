@@ -153,6 +153,6 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <Actions id={row.original.id} />,
+    cell: ({ row }) => <Actions id={row.original.id.toString()} />,
   },
 ];

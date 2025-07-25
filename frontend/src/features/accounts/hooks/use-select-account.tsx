@@ -34,7 +34,7 @@ export const useSelectAccount = (): [
   const selectValue = useRef<string | undefined>(undefined);
 
   const confirm = () =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, ) => {
       setPromise({ resolve });
     });
 
