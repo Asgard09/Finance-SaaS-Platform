@@ -25,7 +25,7 @@ export const useSelectAccount = (): [
   const onCreateAccount = (name: string) => accountMutation.mutate({ name });
   const accountOptions = (accountQuery.data ?? []).map((account) => ({
     label: account.name,
-    value: account.id,
+    value: account.id.toString(),
   }));
 
   const [promise, setPromise] = useState<{
@@ -34,7 +34,7 @@ export const useSelectAccount = (): [
   const selectValue = useRef<string | undefined>(undefined);
 
   const confirm = () =>
-    new Promise((resolve, ) => {
+    new Promise((resolve) => {
       setPromise({ resolve });
     });
 

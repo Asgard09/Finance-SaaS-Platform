@@ -47,7 +47,7 @@ export const EditTransactionSheet = () => {
   const onCreateCategory = (name: string) => categoryMutation.mutate({ name });
   const categoryOptions = (categoryQuery.data ?? []).map((category) => ({
     label: category.name,
-    value: category.id,
+    value: category.id.toString(),
   }));
 
   const accountQuery = useGetAccounts();
@@ -55,7 +55,7 @@ export const EditTransactionSheet = () => {
   const onCreateAccount = (name: string) => accountMutation.mutate({ name });
   const accountOptions = (accountQuery.data ?? []).map((account) => ({
     label: account.name,
-    value: account.id,
+    value: account.id.toString(),
   }));
 
   const isPending =

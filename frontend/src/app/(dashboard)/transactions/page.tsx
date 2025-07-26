@@ -77,7 +77,7 @@ const TransactionsPage = () => {
 
     const data = values.map((value) => ({
       ...value,
-      accountId: accountId as string,
+      accountId: parseInt(accountId as string),
     }));
 
     createTransactions.mutate(data, {
@@ -148,9 +148,8 @@ const TransactionsPage = () => {
             columns={columns}
             data={transactions}
             filterOptions={filterOptions}
-            onDelete={(row) => {
-              const ids = row.map((r) => r.original.id);
-              deleteTransactions.mutate({ ids });
+            onDelete={() => {
+              deleteTransactions.mutate();
             }}
             disabled={isDisabled}
           />
