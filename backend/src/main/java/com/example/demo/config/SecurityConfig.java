@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,9 +46,21 @@ public class SecurityConfig {
                             .logoutSuccessUrl(frontendUrl+"/login")
                             .deleteCookies("JSESSIONID")
                             .invalidateHttpSession(true)
-            );
+                    )
+                    // Thêm session management configuration
+                    .sessionManagement(session -> session
+                            .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
+                            .maximumSessions(1)
+                            .maxSessionsPreventsLogin(false)
+                    );
 
             return http.build();
+    }
+
+    // Thêm Cookie SameSite configuration
+    @Bean
+    public CookieSameSiteSupplier cookieSameSiteSupplier() {
+        return CookieSameSiteSupplier.ofNone(); // SameSite=None cho cross-site
     }
 
     @Bean

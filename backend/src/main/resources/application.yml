@@ -27,3 +27,21 @@ spring:
               - profile
               - email
             redirect-uri: ${BACKEND_URL}/login/oauth2/code/google
+
+  # Session configuration
+  session:
+    timeout: 30m
+    cookie:
+      name: JSESSIONID
+      secure: true # HTTPS
+      http-only: true # XSS
+      same-site: none # cross-site
+      max-age: 1800 # 30 minutes
+
+server:
+  servlet:
+    session:
+      cookie:
+        secure: true
+        same-site: none
+        http-only: true
