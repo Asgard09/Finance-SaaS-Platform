@@ -122,7 +122,7 @@ export default function LandingPage() {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             Comprehensive financial management platform that helps you track
             expenses, analyze spending patterns, and make informed financial
-            decisions.
+            decisions434.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/login">

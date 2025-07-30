@@ -5,11 +5,10 @@ import Image from "next/image";
 
 // export default LoginPage;
 export default function Page() {
-  console.log("API:", process.env.NEXT_PUBLIC_API_URL)
+  console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
+
   const handleGoogleLogin = () => {
-    // Redirect to backend OAuth2 login endpoint
-    window.location.href =
-      `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorization/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorization/google`;
   };
   return (
     <div className="min-h-screen  grid grid-cols-1 lg:grid-cols-2">

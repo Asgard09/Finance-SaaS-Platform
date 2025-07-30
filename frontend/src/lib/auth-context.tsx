@@ -31,22 +31,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    checkAuthStatus();
+    // Check if we're coming back from OAuth
+    // const urlParams = new URLSearchParams(window.location.search);
+    const fromOAuth =
+      window.location.pathname === "/" &&
+      document.referrer.includes("accounts.google.com");
+
+    if (fromOAuth) {
+      // Small delay to let session establish
+      setTimeout(() => checkAuthStatus(), 500);
+    } else {
+      checkAuthStatus();
+    }
   }, []);
 
   const checkAuthStatus = async () => {
     try {
+      console.log(
+        "Checking auth with URL:",
+        `${process.env.NEXT_PUBLIC_API_URL}/user/profile`
+      );
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/user/profile`,
         {
           credentials: "include",
+          mode: "cors", // Explicitly set CORS mode
         }
       );
 
+      console.log("Auth response status:", response.status);
+      console.log("Auth response headers:", response.headers);
+
       if (response.ok) {
         const userData = await response.json();
+        console.log("User data received:", userData);
         setUser(userData);
       } else {
+        console.log("Auth failed with status:", response.status);
         setUser(null);
       }
     } catch (error) {
