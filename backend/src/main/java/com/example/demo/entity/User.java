@@ -16,11 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class User extends BaseEntity{
     @Column(unique = true, nullable = false)
     private String oauthId;
 
