@@ -20,11 +20,13 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class SecurityConfig {
     private final String frontendUrl;
+    private final String backendUrl;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
-    public SecurityConfig(@Value("${frontend.url}") String frontendUrl, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
+    public SecurityConfig(@Value("${frontend.url}") String frontendUrl, @Value("${backend.url}") String backendUrl, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
         this.frontendUrl = frontendUrl;
+        this.backendUrl = backendUrl;
         this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
         this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
     }
@@ -77,7 +79,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of(frontendUrl, "http://localhost:8080"));
+        configuration.setAllowedOriginPatterns(List.of(frontendUrl, backendUrl));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
