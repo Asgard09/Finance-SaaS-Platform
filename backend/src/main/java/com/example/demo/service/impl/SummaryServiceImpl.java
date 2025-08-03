@@ -36,8 +36,11 @@ public class SummaryServiceImpl implements SummaryService {
         FinancialSummaryProjection lastPeriod = transactionRepository.getFinancialSummary(userId, lastPeriodStart, lastPeriodEnd, accountId);
 
         // Get category summary
-        List<CategorySummaryProjection> categoryData = transactionRepository.getEachCategoryExpenses(userId, from, to, accountId);
-        List<SummaryDTO.CategorySummaryDTO> categories = processCategoryData(categoryData);
+        List<CategorySummaryProjection> categoryExpenseData = transactionRepository.getEachCategoryExpenses(userId, from, to, accountId);
+        List<SummaryDTO.CategorySummaryDTO> expenseCategories = processCategoryData(categoryExpenseData);
+
+        List<CategorySummaryProjection> categoryIncomeData = transactionRepository.getEachCategoryIncomes(userId, from, to, accountId);
+        List<SummaryDTO.CategorySummaryDTO> incomeCategories = processCategoryData(categoryIncomeData);
 
         // Get a daily summary
         List<DailySummaryProjection> dailyData = transactionRepository.getDailyIncomeAndExpense(userId, from, to, accountId);
@@ -56,7 +59,8 @@ public class SummaryServiceImpl implements SummaryService {
                 .expenseChange(calculatePercentageChange(
                         safeValue(currentPeriod.getExpense()),
                         safeValue(lastPeriod.getExpense())))
-                .categories(categories)
+                .expenseCategories(expenseCategories)
+                .incomeCategories(incomeCategories)
                 .days(days)
                 .build();
     }

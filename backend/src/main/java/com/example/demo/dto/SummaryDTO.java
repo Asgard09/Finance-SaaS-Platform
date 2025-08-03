@@ -20,7 +20,8 @@ public class SummaryDTO {
     private double incomeChange;
     private int expenseAmount;
     private double expenseChange;
-    private List<CategorySummaryDTO> categories;
+    private List<CategorySummaryDTO> expenseCategories;
+    private List<CategorySummaryDTO> incomeCategories;
     private List<DaySummaryDTO> days;
     
     @Getter
