@@ -11,7 +11,11 @@ type SummaryResponse = {
   incomeChange: number;
   expenseAmount: number;
   expenseChange: number;
-  categories: Array<{
+  expenseCategories: Array<{
+    name: string;
+    value: number;
+  }>;
+  incomeCategories: Array<{
     name: string;
     value: number;
   }>;
@@ -60,7 +64,11 @@ const fetchSummary = async (
       Math.abs(data.expenseAmount || 0)
     ),
     remainingAmount: convertAmountFromMiliunits(data.remainingAmount || 0),
-    categories: (data.categories || []).map((category: any) => ({
+    expenseCategories: (data.expenseCategories || []).map((category: any) => ({
+      ...category,
+      value: convertAmountFromMiliunits(category.value || 0),
+    })),
+    incomeCategories: (data.incomeCategories || []).map((category: any) => ({
       ...category,
       value: convertAmountFromMiliunits(category.value || 0),
     })),
