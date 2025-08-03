@@ -80,6 +80,28 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
         @Param("toDate") Date toDate,
         @Param("accountId") Long accountId
     );
+
+    @Query(value = """
+        SELECT
+            c.name as name,
+            SUM(ABS(t.amount)) as value
+        FROM transactions t
+        INNER JOIN accounts a ON t.account_id = a.id
+        INNER JOIN categories c ON t.category_id = c.id
+        WHERE a.user_id = :userId
+        AND t.amount > 0
+        AND t.date BETWEEN :fromDate AND :toDate
+        AND (:accountId IS NULL OR t.account_id = :accountId)
+        GROUP BY c.name
+        ORDER BY SUM(ABS(t.amount)) DESC
+        """, nativeQuery = true)
+    List<CategorySummaryProjection> getEachCategoryIncomes(
+            @Param("userId") Long userId,
+            @Param("fromDate") Date fromDate,
+            @Param("toDate") Date toDate,
+            @Param("accountId") Long accountId
+    );
+
     
     @Query(value = """
         SELECT
