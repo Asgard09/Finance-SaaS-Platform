@@ -38,6 +38,15 @@ spring:
       same-site: none # cross-site
       max-age: 1800 # 30 minutes
 
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  expiration: 900000
+  refresh-token:
+    expiration: 604800000
+  cookie:
+    secure: true
+    same-site: None
+
 server:
   servlet:
     session:
