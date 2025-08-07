@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,12 +24,17 @@ public class SecurityConfig {
     private final String backendUrl;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(@Value("${frontend.url}") String frontendUrl, @Value("${backend.url}") String backendUrl, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
+    public SecurityConfig(@Value("${frontend.url}") String frontendUrl, @Value("${backend.url}") String backendUrl,
+                          OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
+                          OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler,
+                          JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.frontendUrl = frontendUrl;
         this.backendUrl = backendUrl;
         this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
         this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -50,6 +56,8 @@ public class SecurityConfig {
                                     "/webjars/**"
                             ).permitAll()
                             .anyRequest().authenticated())
+                    .sessionManagement(session -> session
+                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2AuthenticationSuccessHandler)
                         .failureHandler(oAuth2AuthenticationFailureHandler)
@@ -57,15 +65,16 @@ public class SecurityConfig {
                     .logout(logout -> logout
                             .logoutUrl("/logout")
                             .logoutSuccessUrl(frontendUrl+"/login")
-                            .deleteCookies("JSESSIONID")
+                            .deleteCookies("access_token")
                             .invalidateHttpSession(true)
                     )
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
                     // Thêm session management configuration
-                    .sessionManagement(session -> session
-                            .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
-                            .maximumSessions(1)
-                            .maxSessionsPreventsLogin(false)
-                    );
+//                    .sessionManagement(session -> session
+//                            .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
+//                            .maximumSessions(1)
+//                            .maxSessionsPreventsLogin(false)
+//                    );
 
             return http.build();
     }
