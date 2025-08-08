@@ -18,16 +18,20 @@ import java.util.function.Function;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class JwtService {
-    @Value("${jwt.secret-key}")
     private final String secretKey;
-
-    @Value("${jwt.expiration}")
     private final long jwtExpiration;
-
-    @Value("${jwt.refresh-token.expiration}")
     private final long refreshExpiration;
+
+    public JwtService(
+            @Value("${jwt.secret-key}") String secretKey,
+            @Value("${jwt.expiration}") long jwtExpiration,
+            @Value("${jwt.refresh-token.expiration}") long refreshExpiration
+    ) {
+        this.secretKey = secretKey;
+        this.jwtExpiration = jwtExpiration;
+        this.refreshExpiration = refreshExpiration;
+    }
 
     public String generateToken(User user) {
         return generateToken(new HashMap<>(), user);
