@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,7 +42,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
             http
                     .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                    .csrf(AbstractHttpConfigurer::disable)
+                    .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers(
                                     "/",
@@ -53,7 +54,11 @@ public class SecurityConfig {
                                     "/configuration/security",
                                     "/error",
                                     "/login",
-                                    "/webjars/**"
+                                    "/webjars/**",
+                                    "/auth/verify",
+                                    "/auth/refresh",
+                                    "/oauth2/**",
+                                    "/login/oauth2/**"
                             ).permitAll()
                             .anyRequest().authenticated())
                     .sessionManagement(session -> session
@@ -69,20 +74,7 @@ public class SecurityConfig {
                             .invalidateHttpSession(true)
                     )
                     .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-                    // Thêm session management configuration
-//                    .sessionManagement(session -> session
-//                            .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
-//                            .maximumSessions(1)
-//                            .maxSessionsPreventsLogin(false)
-//                    );
-
             return http.build();
-    }
-
-    // Thêm Cookie SameSite configuration
-    @Bean
-    public CookieSameSiteSupplier cookieSameSiteSupplier() {
-        return CookieSameSiteSupplier.ofNone(); // SameSite=None cho cross-site
     }
 
     @Bean
