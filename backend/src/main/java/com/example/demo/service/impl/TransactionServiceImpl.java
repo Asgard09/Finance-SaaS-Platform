@@ -25,6 +25,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountRepository accountRepository;
     private final CategoryRepository categoryRepository;
     private final TransactionMapper transactionMapper;
+    private final AuthorizationServiceImpl authorizationService;
 
     @Override
     public Transaction createTransaction(TransactionDTO transactionDTO, User user) {
@@ -34,9 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
         Account account = accountRepository.findById(transactionDTO.getAccountId())
             .orElseThrow(() -> new RuntimeException("Account not found"));
         
-        if (!account.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("Account does not belong to user");
-        }
+        authorizationService.validateAccountOwnerShip(account, user.getId());
         transaction.setAccount(account);
         
         // Set category if provided
@@ -44,9 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
             Category category = categoryRepository.findById(transactionDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
             
-            if (!category.getUser().getId().equals(user.getId())) {
-                throw new RuntimeException("Category does not belong to user");
-            }
+            authorizationService.validateCategoryOwnerShip(category, user.getId());
             transaction.setCategory(category);
         }
         
@@ -74,11 +71,7 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDTO getTransactionById(Long transactionId, Long userId) {
         Transaction transaction = transactionRepository.findById(transactionId)
             .orElseThrow(() -> new RuntimeException("Transaction not found"));
-        
-        if (!transaction.getAccount().getUser().getId().equals(userId)) {
-            throw new RuntimeException("Transaction does not belong to user");
-        }
-        
+        authorizationService.validateTransactionOwnerShip(transaction, userId);
         return transactionMapper.toDTO(transaction);
     }
 
