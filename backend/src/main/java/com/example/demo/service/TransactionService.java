@@ -8,11 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface TransactionService {
-    Transaction createTransaction(TransactionDTO transactionDTO, User user);
-    List<TransactionDTO> getAllTransactions(Long userId, Date from, Date to, Long accountId);
-    TransactionDTO getTransactionById(Long transactionId, Long userId);
-    Transaction updateTransaction(Long transactionId, TransactionDTO transactionDTO, User user);
-    void deleteTransaction(Long transactionId, Long userId);
     void deleteAllTransactions(Long userId);
     List<Transaction> createTransactionsBulk(List<TransactionDTO> transactionDTOs, User user);
 }

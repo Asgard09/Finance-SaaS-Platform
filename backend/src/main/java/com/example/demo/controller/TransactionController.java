@@ -4,6 +4,8 @@ import com.example.demo.dto.TransactionDTO;
 import com.example.demo.entity.Transaction;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.TransactionMapper;
+import com.example.demo.service.TransactionCommandService;
+import com.example.demo.service.TransactionQueryService;
 import com.example.demo.service.TransactionService;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ public class TransactionController {
 
     private final UserService userService;
     private final TransactionService transactionService;
+    private final TransactionCommandService transactionCommandService;
+    private final TransactionQueryService transactionQueryService;
     private final TransactionMapper transactionMapper;
 
     @PostMapping("/create")
@@ -33,7 +37,7 @@ public class TransactionController {
             return ResponseEntity.status(401).build();
         }
         User user = userService.findOrCreateUser(principal);
-        Transaction saved = transactionService.createTransaction(transactionDTO, user);
+        Transaction saved = transactionCommandService.createTransaction(transactionDTO, user);
         return ResponseEntity.ok(transactionMapper.toDTO(saved));
     }
 
@@ -45,7 +49,7 @@ public class TransactionController {
             @AuthenticationPrincipal OAuth2User principal) {
         if (principal == null) return ResponseEntity.status(401).build();
         User user = userService.findOrCreateUser(principal);
-        return ResponseEntity.ok(transactionService.getAllTransactions(user.getId(), from, to, accountId));
+        return ResponseEntity.ok(transactionQueryService.getAllTransactions(user.getId(), from, to, accountId));
     }
 
     @GetMapping("/{id}")
@@ -57,7 +61,7 @@ public class TransactionController {
         
         try {
             User user = userService.findOrCreateUser(principal);
-            TransactionDTO transaction = transactionService.getTransactionById(id, user.getId());
+            TransactionDTO transaction = transactionQueryService.getTransactionById(id, user.getId());
             return ResponseEntity.ok(transaction);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).build();
@@ -75,7 +79,7 @@ public class TransactionController {
         
         try {
             User user = userService.findOrCreateUser(principal);
-            Transaction updated = transactionService.updateTransaction(id, transactionDTO, user);
+            Transaction updated = transactionCommandService.updateTransaction(id, transactionDTO, user);
             return ResponseEntity.ok(transactionMapper.toDTO(updated));
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(null);
@@ -91,7 +95,7 @@ public class TransactionController {
         
         try {
             User user = userService.findOrCreateUser(principal);
-            transactionService.deleteTransaction(id, user.getId());
+            transactionCommandService.deleteTransaction(id, user.getId());
             return ResponseEntity.ok("Transaction deleted successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
